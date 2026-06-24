@@ -87,7 +87,13 @@ close = df["Close"]
 if isinstance(close, pd.DataFrame):
     close = close.iloc[:,0]
 close = close.dropna()
-
+if close.empty:
+    st.error(
+        f"No historical price data found for '{ticker}'. "
+        "Verify the ticker symbol and exchange suffix."
+    )
+    st.stop()
+    
 current_price = float(close.iloc[-1])
 sym = get_currency_config(ticker)
 
